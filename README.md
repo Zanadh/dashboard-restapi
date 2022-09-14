@@ -7,10 +7,10 @@ Stack used:
 
 ## How To Run:
 ### 1. Clone this repo
-### 2. Install all dependencies on both app and server folder
+### 2. Install all dependencies on both app and server folder `npm i | yarn`
 ### 3. Create `.env` files on both app and server folder (see .env-example file)
 ### 4. Make sure your mysql server running 
-### 5. Run the app both server and the web app
+### 5. Run the app both server and the web app `npm run start | yarn start`
 
 
 *notes:
