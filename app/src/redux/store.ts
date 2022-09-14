@@ -1,9 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { sessionsReducer } from './reducers';
-// import { combineReducers } from 'redux';
 import storage from 'redux-persist/lib/storage';
-// import { authReducers } from './modules/auth/reducers';
-// import { getPersistConfig, StorageType } from './persistConfig';
 import {
   persistStore,
   persistReducer,
@@ -14,14 +11,11 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-
-// import storageSession from 'redux-persist/lib/storage/session';
 import { encryptTransform } from 'redux-persist-transform-encrypt';
 
 const encryptor = encryptTransform({
   secretKey: 'fauzan13',
   onError(error: Error) {
-    // eslint-disable-next-line no-console
     console.error('createEncryptor error : ', error);
   },
 });

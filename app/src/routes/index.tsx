@@ -1,38 +1,18 @@
-import React from 'react';
-import { Navigate, Outlet, Route, RouteProps, Routes } from 'react-router-dom';
+import { Container } from '@mui/material';
 import { Navbar } from 'components';
-import NotFound from '../pages/404';
+import { Outlet, Route, Routes } from 'react-router-dom';
+import { Login, NotFound, Transaction, User } from '../pages';
+import Home from '../pages/Home';
 import PrivateRoutes, { ProtectedRoute } from './PrivateRoutes';
 import PublicRoutes from './PublicRoutes';
-import Login from '../pages/Auth/Login';
-import useTypedSelector from '../hooks/useTypedSelector';
 
 const DashboardLayout = () => (
   <div>
     <Navbar />
-    <Outlet />
-  </div>
-);
 
-const Home = () => {
-  const accessToken = useTypedSelector((state) => state.sessions).accessToken;
-  return (
-    <div>
-      <h1>HOME</h1>
-      <h2>{JSON.stringify(accessToken)}</h2>
-    </div>
-  );
-};
-
-const Transaction = () => (
-  <div>
-    <h1>Transaction</h1>
-  </div>
-);
-
-const User = () => (
-  <div>
-    <h1>User</h1>
+    <Container maxWidth="xl">
+      <Outlet />
+    </Container>
   </div>
 );
 

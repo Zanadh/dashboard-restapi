@@ -1,20 +1,22 @@
-import { useState, MouseEvent, useMemo } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
+import { styled } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { logout } from '../../redux/actions/sessionsActions';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { googleLogout } from '@react-oauth/google';
+import { MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import useTypedSelector from '../../hooks/useTypedSelector';
+import { logout } from '../../redux/actions/sessionsActions';
 import { isAllowed } from '../../routes/PrivateRoutes';
 
 const pages = [
@@ -22,11 +24,21 @@ const pages = [
   { label: 'Transaction', route: 'transaction', access: 'READ_TRANSACTION' },
 ];
 
+const LOGO = styled(Typography)`
+  margin-right: 16px;
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 0.3rem;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useTypedDispatch();
+  const sessions = useTypedSelector((state) => state.sessions);
   const permissions = useTypedSelector((state) => state.sessions.permissions);
-
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -45,30 +57,28 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
-  const settings = [{ label: 'Logout', onClick: () => dispatch(logout()) }];
+  const settings = [
+    {
+      label: 'Logout',
+      onClick: () => {
+        googleLogout();
+        dispatch(logout());
+      },
+    },
+  ];
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
+          <LOGO
             variant="h6"
             noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            onClick={() => navigate('/')}
+            display={{ xs: 'none', md: 'flex' }}
           >
-            LOGO
-          </Typography>
-
+            SimDash
+          </LOGO>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -115,24 +125,17 @@ const Navbar = () => {
               })}
             </Menu>
           </Box>
-          <Typography
+          <LOGO
+            onClick={() => navigate('/')}
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            display={{ xs: 'flex', md: 'none' }}
             sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
             }}
           >
-            LOGO
-          </Typography>
+            SimDash
+          </LOGO>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map(({ access, label, route }, i) => {
               return (
@@ -152,7 +155,7 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={sessions.email} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

@@ -1,7 +1,14 @@
 import { ACTION_CONSTANTS } from './actions/sessionsActions';
 
-const appInitialState = {
-  accessToken: null,
+interface SessionReducerInterface {
+  accessToken?: string;
+  permissions?: string;
+  name?: string | null;
+  email?: string;
+  action: string;
+}
+
+const appInitialState: SessionReducerInterface = {
   permissions: '',
   action: '',
 };

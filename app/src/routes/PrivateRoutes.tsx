@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, RouteProps, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import useTypedSelector from '../hooks/useTypedSelector';
 
 const PrivateRoutes = () => {
@@ -11,10 +11,9 @@ const PrivateRoutes = () => {
 
 export default PrivateRoutes;
 
-export const isAllowed = (permissions: string, access?: string) => {
+export const isAllowed = (permissions = '', access?: string) => {
   if (!access) return true;
 
-  console.log({ permissions, access }, permissions.split(',').includes(access));
   return permissions.split(',').includes(access);
 };
 
